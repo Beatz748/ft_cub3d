@@ -15,13 +15,6 @@ typedef struct		t_mlx
     void	        *mlx;
 }					t_mlx;
 
-typedef	struct		t_pl
-{
-	int x;
-	int y;
-
-}
-
 void    ft_scaled(void *mlx, void *win, int i, int j)
 {
     int x = 0;
