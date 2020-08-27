@@ -18,18 +18,21 @@
 typedef struct s_param{
 	int		x;
 	int		y;
+	double	dir;
 	void	*mlx;
 	void	*win;
 	char	str[3];
 }				t_param;
 
-void			param_init(t_param *param)
+void			param_init(t_param *p)
 {
-	param->x = 3;
-	param->y = 4;
-	param->str[0] = 'a';
-	param->str[1] = 'b';
-	param->str[2] = '\0';
+	p->x = 3;
+	p->y = 4;
+	p->dir = PI/2;
+	p->str[0] = 'a';
+	p->str[1] = 'b';
+	p->str[2] = '\0';
+	
 }
 
 void    ft_scaled(void *mlx, void *win, int i, int j, int color)
@@ -46,46 +49,40 @@ void    ft_scaled(void *mlx, void *win, int i, int j, int color)
     }
 }
 
-int				key_press(int keycode, t_param *param)
+void	ft_ray4ik(t_param *p)
+{
+	
+}
+
+int				key_press(int keycode, t_param *p)
 {
 	static int a = 0;
 
-	if (keycode == KEY_D)//Action when W key pressed
+	if (keycode == KEY_D)
 	{
-		param->x += 1;
-		ft_scaled(param->mlx, param->win, param->x, param->y, 0x11cff);
-		ft_scaled(param->mlx, param->win, param->x - 1, param->y, 0x000000);
+		ft_ray4ik(p);
 	}
-	else if (keycode == KEY_S) //Action when S key pressed
+	else if (keycode == KEY_S)
 	{
-		param->y += 1;
-		ft_scaled(param->mlx, param->win, param->x, param->y, 0x11cff);
-		ft_scaled(param->mlx, param->win, param->x, param->y - 1, 0x000000);
 	}
-	else if (keycode == KEY_A) //Action when S key pressed
+	else if (keycode == KEY_A)
 	{
-		param->x -= 1;
-		ft_scaled(param->mlx, param->win, param->x, param->y, 0x11cff);
-		ft_scaled(param->mlx, param->win, param->x + 1, param->y, 0x000000);
 	}
-	else if (keycode == KEY_W) //Action when S key pressed
+	else if (keycode == KEY_W) 
 	{
-		param->y -= 1;
-		ft_scaled(param->mlx, param->win, param->x, param->y, 0x11cff);
-		ft_scaled(param->mlx, param->win, param->x, param->y + 1, 0x000000);
 	}
-	else if (keycode == KEY_ESC) //Quit the program when ESC key pressed
+	else if (keycode == KEY_ESC)
 		exit(0);
 	return (0);
 }
 
 int			main(void)
 {
-	t_param		param;
+	t_param		p;
 
-	param_init(&param);
-	param.mlx = mlx_init();
-	param.win = mlx_new_window(param.mlx, 500, 500, "mlx_project");
-	mlx_key_hook(param.win, key_press, &param);
-	mlx_loop(param.mlx);
+	param_init(&p);
+	p.mlx = mlx_init();
+	p.win = mlx_new_window(p.mlx, 500, 500, "mlx_project");
+	mlx_key_hook(p.win, key_press, &p);
+	mlx_loop(p.mlx);
 }
