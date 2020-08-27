@@ -1,15 +1,7 @@
-# include "get_next_line.h"
+# include "libft/libft.h"
 # include "minilibx/mlx.h"
-
-void	ft_putchar(char c)
-{
-    write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-    ft_putstr_fd(str, 1);
-}
+#include <stdio.h>
+#include <math.h>
 
 void	ft_putendl(char const *s)
 {
@@ -22,6 +14,13 @@ typedef struct		t_mlx
     void			*win;
     void	        *mlx;
 }					t_mlx;
+
+typedef	struct		t_pl
+{
+	int x;
+	int y;
+
+}
 
 void    ft_scaled(void *mlx, void *win, int i, int j)
 {
@@ -59,6 +58,7 @@ void ft_draw(char **map)
         printf("%s", map[i]);
         i++;
     }
+	
     mlx_loop(mlx);
 }
 void    making_mapa(t_list **mapa, int size)
