@@ -16,13 +16,14 @@
 # define KEY_S			1
 # define KEY_D			2
 
+
+
 typedef struct s_param{
 	float		x;
 	float		y;
 	float	    dir;
 	void	    *mlx;
 	void	    *win;
-	char	    str[3];
 }				t_param;
 
 void			param_init(t_param *p)
@@ -30,10 +31,6 @@ void			param_init(t_param *p)
 	p->x = 90;
 	p->y = 90;
 	p->dir = PI/2;
-	p->str[0] = 'a';
-	p->str[1] = 'b';
-	p->str[2] = '\0';
-
 }
 
 void    ft_scaled(void *mlx, void *win, int i, int j, int color)
@@ -60,13 +57,13 @@ void	ft_ray4ikr(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -78,13 +75,13 @@ void	ft_ray4ikr(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -106,7 +103,7 @@ void	ft_ray4ikl(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -118,13 +115,13 @@ void	ft_ray4ikl(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -140,13 +137,13 @@ void	ft_ray4ikp(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -181,13 +178,13 @@ void	ft_ray4ikz(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0x000000);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -200,13 +197,13 @@ void	ft_ray4ikz(t_param *p)
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir + x1)), (p->y + c * sin(p->dir + x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         x1 = 0;
         while (x1 < PI/4)
         {
             mlx_pixel_put(p->mlx, p->win, (p->x + c * cos(p->dir - x1)), (p->y + c * sin(p->dir - x1)), 0xFFFFFF);
-            x1 += PI/100;
+            x1 += PI/1000;
         }
         c += 0.1;
     }
@@ -250,7 +247,6 @@ void ft_draw(char **map, t_param *p)
                 ft_scaled(p->mlx, p->win, i, j, 0xFF00FF);
             j++;
         }
-        printf("%s", map[i]);
         i++;
     }
 }
@@ -276,7 +272,7 @@ int			main(void)
 
 	param_init(&p);
     p.mlx = mlx_init();
-    p.win = mlx_new_window(p.mlx, 1920, 1080, "mlx_project");
+    p.win = mlx_new_window(p.mlx, 640, 480, "mlx_project");
     int fd = open("txt.txt", O_RDONLY);
     char *line = NULL;
     t_list *mapa = NULL;
@@ -284,7 +280,6 @@ int			main(void)
     while (get_next_line(fd, &line))
     {
         ft_lstadd_back(&mapa, ft_lstnew(line));
-        printf("%s", mapa->content);
         ret++;
     }
     ret++;
