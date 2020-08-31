@@ -1,16 +1,37 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <math.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
+# include <fcntl.h>
+# include <stdio.h>
 # include "minilibx/mlx.h"
-# include "libft/libft.h"
-# include <math.h>
 
-# define KEY_A			0
-# define KEY_S			1
-# define KEY_D			2
-# define KEY_W			13
-#define PI 3.1415926535
-#define KEY_ESC			53
+# define WHITE 0x00FFFFFF
+# define BLACK 0x00000000
+# define RED 0x00FF0000
+# define GREEN 0x0000FF00
+# define BLUE 0x000000FF
+# define MAGENTA 0x00FF00FF
+# define YELLOW 0x00FFFF00
+# define CYAN 0x0000FFFF
+# define X_EVENT_KEY_PRESS 2
+# define X_EVENT_KEY_RELEASE	3
+# define rotSpeed 0.05
+
+# define ESC 53
+# define W 13
+# define A 0
+# define S 1
+# define D 2
+# define UP 126
+# define DOWN 125
+# define LEFT 123
+# define RIGHT 124
+# define screenWidth 1280
+# define screenHeight 720
 
 typedef struct  s_data {
     void        *img;
@@ -20,21 +41,32 @@ typedef struct  s_data {
     int         endian;
 }               t_data;
 
-typedef struct s_param{
-	float		x;
-	float		y;
-	float	    dir;
-	void	    *mlx;
-	void	    *win;
-    int         height;
-    int         width;
+typedef	struct	s_param{
+	void	*mlx;
+	void	*win;
+	double	posX;
+	double	posY;
+	double	planeX;
+	double	planeY;
+	double	camera;
+	double	rayDirX;
+	double	sideDistX;
+	double	sideDistY;
+	double	rayDirY;
+	double	dirX;
+	double	dirY;
+	double	deltaDistX;
+	double	deltaDistY;
+    int     height;
+    int     width;
+	char	textureNO;
+	char	textureSO;
+	char	textureWE;
+	char	textureEA;
+	char	textureS;
+  	double	perpWallDist;
+  	int		stepX;
+  	int		stepY;
 }				t_param;
-void    making_mapa(t_list **mapa, int size, t_param *p);
-
-void			param_init(t_param *p);
-
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color);
-
-void ft_draw(char **map, t_param *p);
 
 #endif
