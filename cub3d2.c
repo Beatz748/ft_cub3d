@@ -136,5 +136,6 @@ int main()
       x++;
 		}
       mlx_put_image_to_window(p.mlx, p.win, img.img, 0, 0);
+      mlx_xpm_file_to_image(p.mlx, "pics/wood.png", 0, 0);
       mlx_loop(p.mlx);
   }
