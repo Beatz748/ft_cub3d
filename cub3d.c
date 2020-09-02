@@ -8,6 +8,7 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
     *(unsigned int*)dst = color;
 }
 
+unsigned int buffer[screenHeight][screenWidth];
 
 unsigned int      get_color(t_data *data, int x, int y)
 {
@@ -26,17 +27,22 @@ void			ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_param *p
 	}
 }
 
-void			ft_line2(int i, int drawStart, int drawEnd, t_param *p, t_data *img, int texX, t_data *wood, int lineHeight)
+void			ft_line2(int i, int drawStart, int drawEnd, t_param *p, t_data *img, int texX, t_data *wood, int lineHeight, int side)
 {
   unsigned int color;
   double texPos;
-  double step = 1.0 * screenHeight / lineHeight;
-      texPos = (drawStart - screenHeight / 2 + lineHeight / 2) * step;
+  int texY;
+  double step = 1.5 * screenHeight / lineHeight;
+  double drawing;
+  drawing = (double)drawStart;
+  texPos = (drawStart - screenHeight / 2 + lineHeight / 2) * step;
 	while (drawStart < drawEnd)
 	{
-		color = get_color(wood, (int)texX, texPos/1280);
+    //texY = (int)texPos & (64 - 1);
+		color = get_color(wood, texX, texPos/17);
+    if (side == 1) color = (color >> 1) & 8355711;
     my_mlx_pixel_put(img, i, drawStart, color);
-    texPos += step;
+    texPos += step ;
 		drawStart ++;
 	}
 }
@@ -127,7 +133,7 @@ int ft_render(t_param *p)
       		int		img_width;
 		int 	img_height;
     t_data tex1;
-        tex1.img = mlx_xpm_file_to_image(p->mlx, "pics/greystone.xpm", &img_width, &img_height);
+        tex1.img = mlx_xpm_file_to_image(p->mlx, "dasha.xpm", &img_width, &img_height);
         tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
     double perpWallDist;
   int side;
@@ -217,7 +223,7 @@ while (x < screenWidth)
 			    ft_line(x, drawStart, drawEnd, color, p, &img);
           else if(color == WHITE)
           {
-            ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight);
+            ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
           }
           
       x++;
