@@ -20,7 +20,7 @@
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_RELEASE	3
 # define rotSpeed 0.05
-
+# define moveSpeed 0.25
 # define ESC 53
 # define W 13
 # define A 0
@@ -30,6 +30,8 @@
 # define DOWN 125
 # define LEFT 123
 # define RIGHT 124
+# define Q 12
+# define E 14
 # define screenWidth 1280
 # define screenHeight 720
 

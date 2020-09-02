@@ -89,21 +89,21 @@ if (keycode == W)
       if(worldMap[(int)(p->posX)][(int)(p->posY - p->dirY * 0.25)] == 0) 
       p->posY -= p->dirY * 0.25;
 	}
-	else if (keycode == A)
-	{
-		if(worldMap[(int)p->posX][(int)(p->posY + p->dirX * 0.25)] == 0)
-			p->posY += p->dirX * 0.25;
-		if(worldMap[(int)(p->posX - p->dirY * 0.25)][(int)p->dirY] == 0)
-			p->posX -= p->dirY * 0.25;
-	}
-	else if (keycode == D)
-	{
-		if(worldMap[(int)p->dirX][(int)(p->posY - p->dirX * 0.25)] == 0)
-			p->posY -= p->dirX * 0.25;
-		if(worldMap[(int)p->dirY][(int)(p->posX + p->dirY * 0.25)] == 0)
-			p->posX += p->dirY * 0.25;
-	}
-	else if (keycode == LEFT)
+else if (keycode == A)
+{
+if(worldMap[(int)p->posX][(int)(p->posY + p->dirX * moveSpeed)] == 0)
+p->posY += p->dirX * moveSpeed;
+if(worldMap[(int)(p->posX - p->dirY * moveSpeed)][(int)p->posY] == 0)
+p->posX -= p->dirY * moveSpeed;
+}
+else if (keycode == D)
+{
+if(worldMap[(int)p->posX][(int)(p->posY - p->dirX * moveSpeed)] == 0)
+p->posY -= p->dirX * moveSpeed;
+if(worldMap[(int)(p->posX + p->dirY * moveSpeed)][(int)p->posY] == 0)
+p->posX += p->dirY * moveSpeed;
+}
+	else if (keycode == LEFT || keycode == Q)
 	{
       double oldDirX = p->dirX;
       p->dirX = p->dirX * cos(rotSpeed) - p->dirY * sin(rotSpeed);
@@ -112,7 +112,7 @@ if (keycode == W)
       p->planeX = p->planeX * cos(rotSpeed) - p->planeY * sin(rotSpeed);
       p->planeY = oldPlaneX * sin(rotSpeed) + p->planeY * cos(rotSpeed);
     }
-	else if (keycode == RIGHT)
+	else if (keycode == RIGHT || keycode == E)
 	{
      double oldDirX = p->dirX;
       p->dirX = p->dirX * cos(-rotSpeed) - p->dirY * sin(-rotSpeed);
@@ -133,6 +133,15 @@ int ft_render(t_param *p)
       		int		img_width;
 		int 	img_height;
     t_data tex1;
+    t_data tex2;
+    t_data tex3;
+    t_data tex4;
+            tex2.img = mlx_xpm_file_to_image(p->mlx, "d2.xpm", &img_width, &img_height);
+        tex2.addr = mlx_get_data_addr(tex2.img, &tex2.bits_per_pixel, &tex2.line_length, &tex2.endian);
+            tex3.img = mlx_xpm_file_to_image(p->mlx, "d2.xpm", &img_width, &img_height);
+        tex3.addr = mlx_get_data_addr(tex3.img, &tex3.bits_per_pixel, &tex3.line_length, &tex3.endian);
+            tex4.img = mlx_xpm_file_to_image(p->mlx, "d3.xpm", &img_width, &img_height);
+        tex4.addr = mlx_get_data_addr(tex4.img, &tex4.bits_per_pixel, &tex4.line_length, &tex4.endian);
         tex1.img = mlx_xpm_file_to_image(p->mlx, "dasha.xpm", &img_width, &img_height);
         tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
     double perpWallDist;
@@ -212,19 +221,19 @@ while (x < screenWidth)
 
 
 			if (p->posY > mapY && side)
-				color = RED;
+				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex4, lineHeight, side);
 			else if (p->posY < mapY && side)
-				color = BLUE;
+				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex2, lineHeight, side);
 			else if (p->posX > mapX && !side)
-				color = WHITE;
+          ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
 			else if (p->posX < mapX && !side)
-				color = GREEN;
-        if (color != WHITE)
-			    ft_line(x, drawStart, drawEnd, color, p, &img);
-          else if(color == WHITE)
-          {
-            ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
-          }
+				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex3, lineHeight, side);
+        //if (color != WHITE)
+			 //  ft_line(x, drawStart, drawEnd, color, p, &img);
+        //   else if(color == WHITE)
+        //   {
+        //     ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
+        //   }
           
       x++;
 		}
@@ -244,7 +253,7 @@ int main()
   p.mlx = mlx_init();
   		int		img_width;
 		int 	img_height;
-  p.win = mlx_new_window(p.mlx, 1000, 1000, "cub3d");
+  p.win = mlx_new_window(p.mlx, screenWidth, screenHeight, "cub3d");
   mlx_hook(p.win, X_EVENT_KEY_PRESS, 0, &ft_changedir, &p);
   mlx_loop_hook(p.mlx, &ft_render, &p);
     ii = mlx_xpm_file_to_image(p.mlx, "pics/greystone.xpm", &img_width, &img_height);
