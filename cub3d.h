@@ -6,6 +6,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
+# include "libft/libft.h"
 # include <stdio.h>
 # include "minilibx/mlx.h"
 
@@ -19,7 +20,7 @@
 # define CYAN 0x0000FFFF
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_RELEASE	3
-# define rotSpeed 0.05
+# define rotSpeed 0.15
 # define moveSpeed 0.25
 # define ESC 53
 # define W 13
@@ -44,8 +45,17 @@ typedef struct  s_data {
 }               t_data;
 
 typedef	struct	s_param{
+	int		scW;
+	int		scH;
+	unsigned int F;
+	unsigned int C;
 	void	*mlx;
 	void	*win;
+	t_data	NO;
+	t_data	SO;
+	t_data	WE;
+	t_data	EA;
+	t_data	SP;
 	double	posX;
 	double	posY;
 	double	planeX;
@@ -61,11 +71,6 @@ typedef	struct	s_param{
 	double	deltaDistY;
     int     height;
     int     width;
-	char	textureNO;
-	char	textureSO;
-	char	textureWE;
-	char	textureEA;
-	char	textureS;
   	double	perpWallDist;
   	int		stepX;
   	int		stepY;

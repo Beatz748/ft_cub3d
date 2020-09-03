@@ -26,7 +26,25 @@ void			ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_param *p
 		drawStart++;
 	}
 }
-
+void			ft_line3(int i, int drawStart, int drawEnd, t_param *p, t_data *img, int texX, t_data *wood, int lineHeight, int side)
+{
+  unsigned int color;
+  double texPos;
+  int texY;
+  double step = 1.5 * screenHeight / lineHeight;
+  double drawing;
+  drawing = (double)drawStart;
+  texPos = (drawStart - screenHeight / 2 + lineHeight / 2) * step;
+	while (drawStart < drawEnd)
+	{
+    //texY = (int)texPos & (64 - 1);
+		color = get_color(wood, texX, texPos/17);
+    if( color != 0x000000)
+      my_mlx_pixel_put(img, i, drawStart, color);
+    texPos += step ;
+		drawStart ++;
+	}
+}
 void			ft_line2(int i, int drawStart, int drawEnd, t_param *p, t_data *img, int texX, t_data *wood, int lineHeight, int side)
 {
   unsigned int color;
@@ -59,7 +77,7 @@ int worldMap[24][24]={
   {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -122,8 +140,10 @@ p->posX += p->dirY * moveSpeed;
       p->planeY = oldPlaneX * sin(-rotSpeed) + p->planeY * cos(-rotSpeed);
     }
 	else if (keycode == ESC)
-		exit(0);
-	return (0);
+{
+		mlx_clear_window(p->mlx, p->win);
+}
+return (0);
 }
 int ft_render(t_param *p)
 {
@@ -136,13 +156,16 @@ int ft_render(t_param *p)
     t_data tex2;
     t_data tex3;
     t_data tex4;
-            tex2.img = mlx_xpm_file_to_image(p->mlx, "d2.xpm", &img_width, &img_height);
+    t_data sp;
+                sp.img = mlx_xpm_file_to_image(p->mlx, "barrel.xpm", &img_width, &img_height);
+        sp.addr = mlx_get_data_addr(sp.img, &sp.bits_per_pixel, &sp.line_length, &sp.endian);
+            tex2.img = mlx_xpm_file_to_image(p->mlx, "pics/redbrick.xpm", &img_width, &img_height);
         tex2.addr = mlx_get_data_addr(tex2.img, &tex2.bits_per_pixel, &tex2.line_length, &tex2.endian);
-            tex3.img = mlx_xpm_file_to_image(p->mlx, "d2.xpm", &img_width, &img_height);
+            tex3.img = mlx_xpm_file_to_image(p->mlx, "pics/wood.xpm", &img_width, &img_height);
         tex3.addr = mlx_get_data_addr(tex3.img, &tex3.bits_per_pixel, &tex3.line_length, &tex3.endian);
-            tex4.img = mlx_xpm_file_to_image(p->mlx, "d3.xpm", &img_width, &img_height);
+            tex4.img = mlx_xpm_file_to_image(p->mlx, "pics/mossy.xpm", &img_width, &img_height);
         tex4.addr = mlx_get_data_addr(tex4.img, &tex4.bits_per_pixel, &tex4.line_length, &tex4.endian);
-        tex1.img = mlx_xpm_file_to_image(p->mlx, "dasha.xpm", &img_width, &img_height);
+        tex1.img = mlx_xpm_file_to_image(p->mlx, "pics/greystone.xpm", &img_width, &img_height);
         tex1.addr = mlx_get_data_addr(tex1.img, &tex1.bits_per_pixel, &tex1.line_length, &tex1.endian);
     double perpWallDist;
   int side;
@@ -216,25 +239,17 @@ while (x < screenWidth)
       int texX = (int)(wallX * (double)(texWidth));
       if(side == 0 && p->rayDirX > 0) texX = texWidth - texX - 1;
       if(side == 1 && p->rayDirY < 0) texX = texWidth - texX - 1;
-
-
-
-
-			if (p->posY > mapY && side)
+      
+      if (worldMap[mapX][mapY] == 9)
+        ft_line3(x, drawStart, drawEnd, p, &img, texX, &sp, lineHeight, side);
+			else if (p->posY > mapY && side && worldMap[mapX][mapY] != 9)
 				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex4, lineHeight, side);
-			else if (p->posY < mapY && side)
+			else if (p->posY < mapY && side && worldMap[mapX][mapY] != 9)
 				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex2, lineHeight, side);
-			else if (p->posX > mapX && !side)
+			else if (p->posX > mapX && !side && worldMap[mapX][mapY] != 9)
           ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
-			else if (p->posX < mapX && !side)
-				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex3, lineHeight, side);
-        //if (color != WHITE)
-			 //  ft_line(x, drawStart, drawEnd, color, p, &img);
-        //   else if(color == WHITE)
-        //   {
-        //     ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex1, lineHeight, side);
-        //   }
-          
+			else if (p->posX < mapX && !side && worldMap[mapX][mapY] != 9)
+				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex3, lineHeight, side);          
       x++;
 		}
     mlx_put_image_to_window(p->mlx, p->win, img.img, 0, 0);
@@ -248,15 +263,10 @@ int main()
   p.planeX = 0;
   p.planeY = 0.66;
   p.dirX = -1;
-  void *ii;
   p.dirY = 0;
   p.mlx = mlx_init();
-  		int		img_width;
-		int 	img_height;
   p.win = mlx_new_window(p.mlx, screenWidth, screenHeight, "cub3d");
-  mlx_hook(p.win, X_EVENT_KEY_PRESS, 0, &ft_changedir, &p);
+    mlx_hook(p.win, X_EVENT_KEY_PRESS, 0, &ft_changedir, &p);
   mlx_loop_hook(p.mlx, &ft_render, &p);
-    ii = mlx_xpm_file_to_image(p.mlx, "pics/greystone.xpm", &img_width, &img_height);
-  mlx_put_image_to_window(p.mlx, p.win, ii, 0, 0);
       mlx_loop(p.mlx);
   }

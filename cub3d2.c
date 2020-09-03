@@ -1,141 +1,165 @@
-
 #include "cub3d.h"
 
-void            my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
+void  ft_init(t_param *p)
 {
-    char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
+	p->posX = 0;
+	p->posY = 0;
+	p->planeX = 0;
+	p->planeX = 0;
+	p->mlx = mlx_init();
+	p->win = 0;
+	p->F = -1;
+	p->C = -1;
+	p->scW = -1;
+	p->scH = -1;
 }
 
-void			ft_line(int i, int drawStart, int drawEnd, unsigned int color, t_param *p, t_data *img)
+void  ft_parse_ceil(t_param *p, char *line)
 {
-	while (drawStart < drawEnd)
-	{
-		my_mlx_pixel_put(img, i, drawStart, color);
-		drawStart++;
-	}
+	int R;
+	int G;
+	int B;
+
+	line++;
+	while (*line == ' ' || *line == ',')
+		line++;
+	R = ft_atoi(line);
+	line += ft_intlen(R);
+	while (*line == ' ' || *line == ',')
+		line++;    
+	G = ft_atoi(line);
+	line += ft_intlen(G);
+	while (*line == ' ' || *line == ',')
+		line++;
+	B = ft_atoi(line);
+	p->C = mlx_get_color_value(p->mlx, R*65536+G*256+B);
 }
 
-int worldMap[24][24]={
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+void  ft_parse_floor(t_param *p, char *line)
+{
+	int R;
+	int G;
+	int B;
+
+	line++;
+	while (*line == ' ' || *line == ',')
+		line++;
+	R = ft_atoi(line);
+	line += ft_intlen(R);
+	while (*line == ' ' || *line == ',')
+		line++;    
+	G = ft_atoi(line);
+	line += ft_intlen(G);
+	while (*line == ' ' || *line == ',')
+		line++;
+	B = ft_atoi(line);
+	p->F = mlx_get_color_value(p->mlx, R*65536+G*256+B);
+}
+
+void  ft_parse_resolution(t_param *p, char *line)
+{
+	line++;
+	while (*line == ' ')
+		line++;
+	p->scW = ft_atoi(line);
+	line += ft_intlen(p->scW);
+	while (*line == ' ')
+		line++;
+	p->scH = ft_atoi(line);
+}
+
+void  ft_parse_EA(t_param *p, char *line)
+{
+	int		img_width;
+	int 	img_height;
+
+	line += 2;
+	while (*line == ' ')
+		line++;
+	p->EA.img = mlx_xpm_file_to_image(p->mlx, ft_strtrim(line, " "), &img_width, &img_height);
+	p->EA.addr = mlx_get_data_addr(p->EA.img, &p->EA.bits_per_pixel, &p->EA.line_length, &p->EA.endian);
+}
+
+void  ft_parse_WE(t_param *p, char *line)
+{
+	int		img_width;
+	int 	img_height;
+
+	line += 2;
+	while (*line == ' ')
+		line++;
+	p->WE.img = mlx_xpm_file_to_image(p->mlx, ft_strtrim(line, " "), &img_width, &img_height);
+	p->WE.addr = mlx_get_data_addr(p->WE.img, &p->WE.bits_per_pixel, &p->WE.line_length, &p->WE.endian);
+}
+
+void  ft_parse_SO(t_param *p, char *line)
+{
+	int		img_width;
+	int 	img_height;
+
+	line += 2;
+	while (*line == ' ')
+		line++;
+	p->SO.img = mlx_xpm_file_to_image(p->mlx, ft_strtrim(line, " "), &img_width, &img_height);
+	p->SO.addr = mlx_get_data_addr(p->SO.img, &p->SO.bits_per_pixel, &p->SO.line_length, &p->SO.endian);
+}
+
+void  ft_parse_SP(t_param *p, char *line)
+{
+	int		img_width;
+	int 	img_height;
+
+	line += 2;
+	while (*line == ' ')
+		line++;
+	p->SP.img = mlx_xpm_file_to_image(p->mlx, ft_strtrim(line, " "), &img_width, &img_height);
+	p->SP.addr = mlx_get_data_addr(p->SP.img, &p->SP.bits_per_pixel, &p->SP.line_length, &p->SP.endian);
+}
+
+void  ft_parse_NO(t_param *p, char *line)
+{
+	int		img_width;
+	int 	img_height;
+
+	line += 2;
+	while (*line == ' ')
+		line++;
+	p->NO.img = mlx_xpm_file_to_image(p->mlx, ft_strtrim(line, " "), &img_width, &img_height);
+	p->NO.addr = mlx_get_data_addr(p->NO.img, &p->NO.bits_per_pixel, &p->NO.line_length, &p->NO.endian);
+}
+
+int ft_parser(t_param *p, char *line)
+{
+	if (line[0] == 'R')
+		ft_parse_resolution(p, line);
+	if (line[0] == 'F')
+		ft_parse_floor(p, line);
+	if (line[0] == 'C')
+		ft_parse_ceil(p, line);
+	if (line[0] == 'N' && line[1] == 'O')
+		ft_parse_NO(p, line);
+	if (line[0] == 'S' && line[1] == 'O')
+		ft_parse_SO(p, line);
+	if (line[0] == 'W' && line[1] == 'E')
+		ft_parse_WE(p, line);
+	if (line[0] == 'E' && line[1] == 'A')
+		ft_parse_EA(p, line);
+		return (0);
+}
 
 int main()
 {
-  t_param p;
-  t_data img;
-  int x;
-  int hit;
-  int side;
-  p.posX = 22;
-  p.posY = 12;
-  p.planeX = 0;
-  p.planeY = 0.66;
-  p.dirX = -1;
-  p.dirY = 0;
-  double perpWallDist;
-  p.mlx = mlx_init();
-  p.win = mlx_new_window(p.mlx, screenWidth, screenHeight, "cub3d");
-  img.img = mlx_new_image(p.mlx, screenWidth, screenHeight);
-  img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-  x = 0;
-  while (x < screenWidth)
-  {
+	t_param p;
+	char *line;
+	int fd;
+	t_data *mapa;
+	int i;
 
-  p.camera = 2 * x / (double)screenWidth - 1 ;
-  p.rayDirX = p.dirX + p.planeX * p.camera;
-  p.rayDirY = p.dirY + p.planeY * p.camera;
-	int mapX = (int)p.posX;
-	int mapY = (int)p.posY;
-  hit = 0;
-  p.deltaDistX = fabs(1 / p.rayDirX);
-  p.deltaDistY = fabs(1 / p.rayDirY);
-  if (p.rayDirX < 0)
-      {
-        p.stepX = -1;
-        p.sideDistX = (p.posX - mapX) * p.deltaDistX;
-      }
-      else
-      {
-        p.stepX = 1;
-        p.sideDistX = (mapX + 1.0 - p.posX) * p.deltaDistX;
-      }
-      if (p.rayDirY < 0)
-      {
-        p.stepY = -1;
-        p.sideDistY = (p.posY - mapY) * p.deltaDistY;
-      }
-      else
-      {
-        p.stepY = 1;
-        p.sideDistY = (mapY + 1.0 - p.posY) * p.deltaDistY;
-      }
-      while (hit == 0)
-      {
-        if (p.sideDistX < p.sideDistY)
-        {
-          p.sideDistX += p.deltaDistX;
-          mapX += p.stepX;
-          side = 0;
-        }
-        else
-        {
-          p.sideDistY += p.deltaDistY;
-          mapY += p.stepY;
-          side = 1;
-        }
-        if (worldMap[mapX][mapY] > 0) 
-        hit = 1;
-      } 
-      if (side == 0) 
-        perpWallDist = (mapX - p.posX + (1 - p.stepX) / 2) / p.rayDirX;
-      else          
-        perpWallDist = (mapY - p.posY + (1 - p.stepY) / 2) / p.rayDirY;
-			int lineHeight = (int)(screenHeight / perpWallDist);
-			int drawStart = -lineHeight / 2 + screenHeight / 2;
-			if(drawStart < 0)
-				drawStart = 0;
-			int drawEnd = lineHeight / 2 + screenHeight / 2;
-			if(drawEnd >= screenHeight)
-				drawEnd = screenHeight - 1;
-			unsigned int color;
-			if (p.posY > mapY && side)
-				color = RED;
-			else if (p.posY < mapY && side)
-				color = BLUE;
-			else if (p.posX > mapX && !side)
-				color = WHITE;
-			else if (p.posX < mapX && !side)
-				color = GREEN;
-			ft_line(x, drawStart, drawEnd, color, &p, &img);
-      x++;
-		}
-      mlx_put_image_to_window(p.mlx, p.win, img.img, 0, 0);
-      mlx_xpm_file_to_image(p.mlx, "pics/wood.png", 0, 0);
-      mlx_loop(p.mlx);
-  }
+	ft_init(&p);
+	fd = open("map.cub", O_RDONLY);
+	while (get_next_line(fd, &line))
+	{
+		ft_parser(&p, line);
+	}
+	return (0);
+}
