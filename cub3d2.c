@@ -128,23 +128,32 @@ void  ft_parse_NO(t_param *p, char *line)
 	p->NO.addr = mlx_get_data_addr(p->NO.img, &p->NO.bits_per_pixel, &p->NO.line_length, &p->NO.endian);
 }
 
+int	ft_checking_all(t_param *p)
+{
+	if (p->NO.img && p->EA.img && p->WE.img && p->SO.img && p->scH != -1 && p->scW != -1 && p->F != -1 && p->C != -1)
+		return (1);
+	return (0);
+}
 int ft_parser(t_param *p, char *line)
 {
 	if (line[0] == 'R')
 		ft_parse_resolution(p, line);
-	if (line[0] == 'F')
+	else if (line[0] == 'F')
 		ft_parse_floor(p, line);
-	if (line[0] == 'C')
+	else if (line[0] == 'C')
 		ft_parse_ceil(p, line);
-	if (line[0] == 'N' && line[1] == 'O')
+	else if (line[0] == 'N' && line[1] == 'O')
 		ft_parse_NO(p, line);
-	if (line[0] == 'S' && line[1] == 'O')
+	else if (line[0] == 'S' && line[1] == 'O')
 		ft_parse_SO(p, line);
-	if (line[0] == 'W' && line[1] == 'E')
+	else if (line[0] == 'W' && line[1] == 'E')
 		ft_parse_WE(p, line);
-	if (line[0] == 'E' && line[1] == 'A')
+	else if (line[0] == 'E' && line[1] == 'A')
 		ft_parse_EA(p, line);
-		return (0);
+	if	(ft_checking_all(p))
+		return (1);
+	return (0);
+	
 }
 
 int main()
@@ -153,13 +162,13 @@ int main()
 	char *line;
 	int fd;
 	t_data *mapa;
-	int i;
 
 	ft_init(&p);
 	fd = open("map.cub", O_RDONLY);
 	while (get_next_line(fd, &line))
 	{
-		ft_parser(&p, line);
+		if (!(ft_checking_all(&p)))
+			ft_parser(&p, line);
 	}
 	return (0);
 }
