@@ -252,14 +252,15 @@ while (x < screenWidth)
 				ft_line2(x, drawStart, drawEnd, p, &img, texX, &tex3, lineHeight, side);          
       x++;
 		}
+    printf("planex %g/n planey %g \n dirX %g\n dirY %g\n", p->planeX, p->planeY, p->dirX, p->dirY);
     mlx_put_image_to_window(p->mlx, p->win, img.img, 0, 0);
     return (0);
 }
 int main()
 {
   t_param p;
-  p.posX = 22;
-  p.posY = 12;
+  p.posX = 20;
+  p.posY = 10;
   p.planeX = 0;
   p.planeY = 0.66;
   p.dirX = -1;
