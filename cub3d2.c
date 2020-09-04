@@ -156,6 +156,24 @@ int ft_parser(t_param *p, char *line)
 	
 }
 
+int ft_parse_map(t_param *p, char *line)
+{
+
+}
+
+void    making_mapa(t_list **mapa, int size, t_param *p)
+{
+    char **map = calloc(size + 1, sizeof(char *));
+    int i;
+    i = -1;
+    t_list *tmp = *mapa;
+    while(tmp)
+    {
+        map[++i] = tmp->content;
+        tmp = tmp->next;
+    }
+}
+
 int main()
 {
 	t_param p;
@@ -169,6 +187,11 @@ int main()
 	{
 		if (!(ft_checking_all(&p)))
 			ft_parser(&p, line);
+		else
+			ft_lstadd_back(&mapa, ft_lstnew(line));
+		free(line);
 	}
+	ft_lstadd_back(&mapa, ft_lstnew(line));
+	making_mapa(&mapa, ft_lstsize(mapa), &p);
 	return (0);
 }
