@@ -71,9 +71,13 @@ typedef	struct	s_map{
 	double	sideDistX;
 	double	sideDistY;
   	double	perpWallDist;
+	int		lineHeight;
 	int		mapX;
 	int		mapY;
 	int		side;
+	int		drawS;
+	int		drawE;
+
 }				t_map;
 
 void  ft_parse_ceil(t_param *p, char *line);

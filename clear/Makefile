@@ -9,7 +9,7 @@ OBJSRCS = $(SRCS:.c=.o)
 
 $(NAME) : $(OBJSRCS)
 	@echo "\033[33m[Cub3D compilation...]"
-	@gcc $(OBJSRCS) -Wall -Wextra -Werror $(MLX)  -o $(NAME)
+	@gcc $(OBJSRCS) -Wall -g -Wextra -Werror $(MLX)  -o $(NAME)
 	@echo "\033[33m[Done !]"
 
 all : $(NAME)

@@ -1,9 +1,36 @@
 #include "cub3d.h"
 
+int worldMap[24][24]={
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
 void  ft_init(t_param *p)
 {
-	p->posX = -1;
-	p->posY = 0;
+	p->dirX = -1;
+	p->dirY = 0;
 	p->mlx = mlx_init();
 	p->win = 0;
 	p->F = -1;
@@ -43,6 +70,7 @@ char   **making_mapa(t_list **mapa, int size, t_param *p)
     int i;
     i = -1;
     t_list *tmp = *mapa;
+	tmp = tmp->next;
     while(tmp)
     {
 		ft_check_orientation(p, tmp->content);
@@ -79,7 +107,7 @@ int	ft_check_map(t_param *p, t_map *map, int stepX, int stepY)
 				map->mapY += stepY;
 				map->side = 1;
 			}
-			if (p->Map[map->mapX][map->mapY] > 0) 
+			if (worldMap[map->mapX][map->mapY] > 0) 
 				return(1);
 	return (0);
 }
@@ -108,19 +136,104 @@ void	ft_part1(t_param *p, t_map *map)
 			stepY = 1;
 			map->sideDistY = (map->mapY + 1.0 - p->posY) * p->deltaDistY;
 		}
-		while((ft_check_map(p, map, stepX, stepY)));
+		while(!(ft_check_map(p, map, stepX, stepY)));
 		if (map->side == 0) 
 			map->perpWallDist = (map->mapX - p->posX + (1 - stepX) / 2) / p->rayDirX;
 		else          
 			map->perpWallDist = (map->mapY - p->posY + (1 - stepY) / 2) / p->rayDirY;
+		map->lineHeight = (int)(p->scH / map->perpWallDist);
+		map->drawS = -map->lineHeight / 2 + p->scH / 2;
+		if(map->drawS < 0)
+			map->drawS = 0;
+		map->drawE = map->lineHeight / 2 + p->scH /2;
+		if (map->drawE >= p->scH)
+			map->drawE = p->scH - 1;
+		
 }
 
-void	ft_image(t_param *p)
+unsigned int      get_color(t_data *data, int x, int y)
+{
+
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    return (*(unsigned int*)dst);
+}
+
+void            my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
+
+int		ft_part2(t_param *p, t_map *map)
+{
+	double wallHit;
+	int texX;
+
+	texX = (int)(wallHit * (double)(64));
+	if (map->side == 0)
+		wallHit = p->posY + map->perpWallDist * p->rayDirY;
+	else
+		wallHit = p->posX + map->perpWallDist * p->rayDirX;
+	wallHit -= floor((wallHit));
+		texX = (int)(wallHit * (double)(64));
+      if(map->side == 0 && p->rayDirX > 0) 
+	  texX = 64 - texX - 1;
+      if(map->side == 1 && p->rayDirY < 0) 
+	  texX = 64 - texX - 1;
+	  return (texX);
+}
+
+void			ft_line2(int x, t_param *p, t_data *img, int texX, t_data *wood, t_map *map)
+{
+  unsigned int color;
+  double texPos;
+  int texY;
+  double step = 1.5 * p->scH / map->lineHeight;
+  double drawing;
+  drawing = (double)map->drawS;
+  texPos = (map->drawS - p->scH / 2 + map->lineHeight / 2) * step;
+	while (map->drawS < map->drawE)
+	{
+		color = get_color(wood, texX, texPos/17);
+    if (map->side == 1) color = (color >> 1) & 8355711;
+    my_mlx_pixel_put(img, x, map->drawS, color);
+    texPos += step ;
+		map->drawS++;
+	}
+}
+
+void	ft_drawing(t_param *p, t_map *map, int texX, int x, t_data *img)
+{
+	if (p->posY > map->mapY && map->side)
+		ft_line2(x, p, img, texX, &p->NO, map);
+	else if (p->posY < map->mapY && map->side)
+		ft_line2(x, p, img, texX, &p->NO, map);
+	else if (p->posX > map->mapX && !map->side)
+		ft_line2(x, p, img, texX, &p->NO, map);
+	else if (p->posX < map->mapX && !map->side)
+		ft_line2(x, p, img, texX, &p->NO, map);    
+}
+
+int  ft_change_dir(int keycode, t_param *p)
+{
+	if (keycode == ESC)
+{
+		mlx_clear_window(p->mlx, p->win);
+		exit(0);
+}
+return (0);
+}
+int	ft_image(t_param *p)
 {
 	int x;
 	t_data img;
 	int perpWallDist;
 	t_map map;
+	int texX;
 
 	x = 0;
     img.img = mlx_new_image(p->mlx, p->scW, p->scH);
@@ -129,9 +242,19 @@ void	ft_image(t_param *p)
 	{
 		ft_start(p, x, &map);
 		ft_part1(p, &map);
+		texX = ft_part2(p, &map);
+		ft_drawing(p, &map, texX, x, &img);
 		x++;
 	}
+	mlx_put_image_to_window(p->mlx, p->win, img.img, 0, 0);
+	return (0);
 }
+
+void	ft_vaild(char	**map)
+{
+
+}
+
 int main()
 {
 	t_param p;
@@ -140,6 +263,8 @@ int main()
 	t_list *mapa;
 
 	ft_init(&p);
+	p.posX = 22;
+	p.posY = 12;
 	fd = open("map.cub", O_RDONLY);
 	while (get_next_line(fd, &line))
 	{
