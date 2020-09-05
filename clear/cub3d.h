@@ -53,26 +53,28 @@ typedef	struct	s_param{
 	t_data	WE;
 	t_data	EA;
 	t_data	SP;
+	double	dirX;
+	double	dirY;
 	double	posX;
 	double	posY;
 	double	planeX;
 	double	planeY;
 	double	camera;
 	double	rayDirX;
-	double	sideDistX;
-	double	sideDistY;
 	double	rayDirY;
-	double	dirX;
-	double	dirY;
 	double	deltaDistX;
 	double	deltaDistY;
-    int     height;
-    int     width;
-  	double	perpWallDist;
-  	int		stepX;
-  	int		stepY;
+	char	**Map;
 }				t_param;
 
+typedef	struct	s_map{
+	double	sideDistX;
+	double	sideDistY;
+  	double	perpWallDist;
+	int		mapX;
+	int		mapY;
+	int		side;
+}				t_map;
 
 void  ft_parse_ceil(t_param *p, char *line);
 

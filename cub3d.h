@@ -9,7 +9,14 @@
 # include "libft/libft.h"
 # include <stdio.h>
 # include "minilibx/mlx.h"
-
+typedef	struct	s_map{
+	double	sideDistX;
+	double	sideDistY;
+  	double	perpWallDist;
+	int		mapX;
+	int		mapY;
+	int		side;
+}				t_map;
 # define WHITE 0x00FFFFFF
 # define BLACK 0x00000000
 # define RED 0x00FF0000
