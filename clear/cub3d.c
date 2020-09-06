@@ -17,7 +17,7 @@ int worldMap[24][24]={
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -220,6 +220,50 @@ void	ft_drawing(t_param *p, t_map *map, int texX, int x, t_data *img)
 
 int  ft_change_dir(int keycode, t_param *p)
 {
+if (keycode == W)
+	{
+      if(worldMap[(int)(p->posX + p->dirX * 0.25)][(int)(p->posY)] == 0) p->posX += p->dirX * 0.25;
+      if(worldMap[(int)(p->posX)][(int)(p->posY + p->dirY * 0.25)] == 0) p->posY += p->dirY * 0.25;
+	}
+	else if (keycode == S)
+	{
+      if(worldMap[(int)(p->posX - p->dirX * 0.25)][(int)(p->posY)] == 0)
+      p->posX -= p->dirX * 0.25;
+      if(worldMap[(int)(p->posX)][(int)(p->posY - p->dirY * 0.25)] == 0)
+      p->posY -= p->dirY * 0.25;
+	}
+else if (keycode == A)
+{
+if(worldMap[(int)p->posX][(int)(p->posY + p->dirX * moveSpeed)] == 0)
+p->posY += p->dirX * moveSpeed;
+if(worldMap[(int)(p->posX - p->dirY * moveSpeed)][(int)p->posY] == 0)
+p->posX -= p->dirY * moveSpeed;
+}
+else if (keycode == D)
+{
+if(worldMap[(int)p->posX][(int)(p->posY - p->dirX * moveSpeed)] == 0)
+p->posY -= p->dirX * moveSpeed;
+if(worldMap[(int)(p->posX + p->dirY * moveSpeed)][(int)p->posY] == 0)
+p->posX += p->dirY * moveSpeed;
+}
+	else if (keycode == LEFT || keycode == Q)
+	{
+      double oldDirX = p->dirX;
+      p->dirX = p->dirX * cos(rotSpeed) - p->dirY * sin(rotSpeed);
+      p->dirY = oldDirX * sin(rotSpeed) + p->dirY * cos(rotSpeed);
+      double oldPlaneX = p->planeX;
+      p->planeX = p->planeX * cos(rotSpeed) - p->planeY * sin(rotSpeed);
+      p->planeY = oldPlaneX * sin(rotSpeed) + p->planeY * cos(rotSpeed);
+    }
+	else if (keycode == RIGHT || keycode == E)
+	{
+     double oldDirX = p->dirX;
+      p->dirX = p->dirX * cos(-rotSpeed) - p->dirY * sin(-rotSpeed);
+      p->dirY = oldDirX * sin(-rotSpeed) + p->dirY * cos(-rotSpeed);
+      double oldPlaneX = p->planeX;
+      p->planeX = p->planeX * cos(-rotSpeed) - p->planeY * sin(-rotSpeed);
+      p->planeY = oldPlaneX * sin(-rotSpeed) + p->planeY * cos(-rotSpeed);
+    }
 	if (keycode == ESC)
 {
 		mlx_clear_window(p->mlx, p->win);
@@ -234,8 +278,11 @@ int	ft_image(t_param *p)
 	int perpWallDist;
 	t_map map;
 	int texX;
+	int buf[p->scW];
 
 	x = 0;
+	// if (&img != NULL)
+	// 	mlx_destroy_image(p->mlx, &img);
     img.img = mlx_new_image(p->mlx, p->scW, p->scH);
   	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	while(x < p->scW)
@@ -244,16 +291,53 @@ int	ft_image(t_param *p)
 		ft_part1(p, &map);
 		texX = ft_part2(p, &map);
 		ft_drawing(p, &map, texX, x, &img);
+		buf[x] = map.perpWallDist;
 		x++;
 	}
+	double spriteX = 16 - p->posX;
+    double spriteY = 11 - p->posY;
+	double invDet = 1.0 / (p->planeX * p->dirY - p->dirX * p->planeY);
+	double transformX = invDet * (p->dirY * spriteX - p->dirX * spriteY);
+	double transformY = invDet * (-p->planeY * spriteX + p->planeX * spriteY);
+	int spriteScreenX = (int)((p->scW / 2) * (1 + transformX / transformY));
+      #define uDiv 1
+      #define vDiv 1
+      #define vMove 0.0
+      int vMoveScreen = (int)(vMove / transformY);
+	  int spriteHeight = abs((int)(p->scH / (transformY)));
+	  int drawStartY = -spriteHeight / 2 + p->scH / 2 + vMoveScreen;
+	        if(drawStartY < 0) drawStartY = 0;
+      int drawEndY = spriteHeight / 2 + p->scH / 2 + vMoveScreen;
+      if(drawEndY >= p->scH) drawEndY = p->scH - 1;
+	      int spriteWidth = abs( (int) (p->scH / (transformY))) / uDiv;
+      int drawStartX = -spriteWidth / 2 + spriteScreenX;
+      if(drawStartX < 0) drawStartX = 0;
+      int drawEndX = spriteWidth / 2 + spriteScreenX;
+      if(drawEndX >= p->scW) drawEndX = p->scW - 1;
+	  int stripe = drawStartX;
+	  while (stripe < drawEndX)
+	  {
+		  int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256;
+		  if(transformY > 0 && stripe > 0 && stripe < p->scW && transformY < buf[stripe])
+		  {
+			  int y = drawStartY;
+		  while (y < drawEndY)
+		  {
+			  int d = (y-vMoveScreen) * 256 - p->scH * 128 + spriteHeight * 128;
+			  int texY = ((d * 64) / spriteHeight) / 256;
+			  int color = get_color (&p->SP,texX,  64 * texY );
+			  if(color != 0x00FFFFFF) 
+					my_mlx_pixel_put(&img, stripe, y, color);
+			  y++;
+		  }
+		  }
+		  stripe++;
+		  }
 	mlx_put_image_to_window(p->mlx, p->win, img.img, 0, 0);
 	return (0);
 }
 
-void	ft_vaild(char	**map)
-{
-
-}
+//16;11
 
 int main()
 {
