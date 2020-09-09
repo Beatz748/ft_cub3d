@@ -76,6 +76,8 @@ int ft_parser(t_param *p, char *line)
 		ft_parse_WE(p, line);
 	else if (line[0] == 'E' && line[1] == 'A')
 		ft_parse_EA(p, line);
+	else if (line[0] == 'S' && line[1] == ' ')
+		ft_parse_SP(p, line);
 	if	(ft_checking_all(p))
 		return (1);
 	return (0);

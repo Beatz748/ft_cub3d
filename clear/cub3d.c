@@ -324,9 +324,10 @@ int	ft_image(t_param *p)
 		  while (y < drawEndY)
 		  {
 			  int d = (y-vMoveScreen) * 256 - p->scH * 128 + spriteHeight * 128;
-			  int texY = ((d * 64) / spriteHeight) / 256;
-			  int color = get_color (&p->SP,texX,  64 * texY );
-			  if(color != 0x00FFFFFF) 
+			  int texY = ((d * 64) / spriteHeight / 256) ;
+			  ft_line2(stripe, p, &img, texX, &p->SP, &map);
+			  unsigned int color = get_color(&p->SP, texX,  texY);
+			  if (color != 0x000000)
 					my_mlx_pixel_put(&img, stripe, y, color);
 			  y++;
 		  }
