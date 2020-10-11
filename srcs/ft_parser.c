@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:23:53 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/11 16:37:07 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	ft_start_parsing(int fd, t_info *p)
 	free(line);
 	if ((get_next_line(fd, &line)) < 1 && !(ft_checking_all(p)))
 		ft_error(2);
+	free(line);
 	p->map = making_map(map, p);
 	ft_lstclear(&map, *free);
 }
