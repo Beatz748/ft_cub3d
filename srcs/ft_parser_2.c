@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:15:52 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:55:42 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,21 @@ void	ft_check_xpm(char *new)
 		ft_error(4);
 }
 
+void	ft_check_less_255(int *c, int r, int g, int b)
+{
+	if (r > 255 || g > 255 || b > 255)
+		ft_error(8);
+	*c = r * 65536 + g * 256 + b;
+}
+
 void	ft_parse_ceil(t_info *p, char *line)
 {
 	int r;
 	int g;
 	int b;
 
-	line++;
+	if (p->c != -1)
+		ft_error(8);
 	while (*line == ' ' || *line == ',')
 		line++;
 	r = ft_atoi(line);
@@ -47,7 +55,7 @@ void	ft_parse_ceil(t_info *p, char *line)
 	line += ft_intlen(b);
 	if (*line != '\0')
 		ft_error(10);
-	p->c = mlx_get_color_value(p->mlx, r * 65536 + g * 256 + b);
+	ft_check_less_255(&p->c, r, g, b);
 }
 
 void	ft_parse_floor(t_info *p, char *line)
@@ -56,7 +64,8 @@ void	ft_parse_floor(t_info *p, char *line)
 	int g;
 	int b;
 
-	line++;
+	if (p->f != -1)
+		ft_error(8);
 	while (*line == ' ' || *line == ',')
 		line++;
 	r = ft_atoi(line);
@@ -75,5 +84,5 @@ void	ft_parse_floor(t_info *p, char *line)
 	line += ft_intlen(b);
 	if (*line != '\0')
 		ft_error(10);
-	p->f = mlx_get_color_value(p->mlx, r * 65536 + g * 256 + b);
+	ft_check_less_255(&p->f, r, g, b);
 }

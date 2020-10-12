@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:27:20 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:37:57 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_initialization(t_info *p)
 {
-	p->scw = -1;
-	p->sch = -1;
+	p->scw = 0;
+	p->sch = 0;
 	p->f = -1;
 	p->c = -1;
 	p->mlx = mlx_init();
@@ -52,6 +52,7 @@ void	ft_get_started(char *name)
 		ft_error(2);
 	if ((fd = open(name, O_RDONLY)) < 0)
 		ft_error(9);
+	p.scr = 0;
 	ft_start_parsing(fd, &p);
 	ft_start_drawing(&p);
 }

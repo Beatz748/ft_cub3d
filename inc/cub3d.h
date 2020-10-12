@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 21:39:53 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:28 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:08:54 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ typedef struct	s_sprite{
 typedef	struct	s_info{
 	int				scw;
 	int				sch;
-	unsigned int	f;
-	unsigned int	c;
+	int				f;
+	int				c;
 	void			*mlx;
 	void			*win;
 	t_tex			tex[5];
@@ -117,6 +117,7 @@ typedef	struct	s_info{
 	int				y;
 	double			texpos;
 	int				x;
+	int				scr;
 }				t_info;
 
 typedef struct	s_sp{
@@ -134,6 +135,7 @@ typedef struct	s_sp{
 	int				width;
 }				t_sp;
 
+int				ft_check_cl(int c);
 void			ft_lstadd_back(t_list **lst, t_list *new);
 t_list			*ft_lstlast(t_list *lst);
 t_list			*ft_lstnew(void *content);

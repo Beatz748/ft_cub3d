@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:17:17 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:40:45 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_parse_ea(t_info *p, char *line)
 	char	*new;
 
 	line += 2;
+	if (p->tex[0].img)
+		ft_error(8);
 	while (*line == ' ')
 		line++;
 	new = ft_strtrim(line, " ");
@@ -37,6 +39,8 @@ void	ft_parse_we(t_info *p, char *line)
 	char	*new;
 
 	line += 2;
+	if (p->tex[1].img)
+		ft_error(8);
 	while (*line == ' ')
 		line++;
 	new = ft_strtrim(line, " ");
@@ -57,6 +61,8 @@ void	ft_parse_so(t_info *p, char *line)
 	char	*new;
 
 	line += 2;
+	if (p->tex[2].img)
+		ft_error(8);
 	while (*line == ' ')
 		line++;
 	new = ft_strtrim(line, " ");
@@ -77,6 +83,8 @@ void	ft_parse_sp(t_info *p, char *line)
 	char	*new;
 
 	line += 2;
+	if (p->tex[4].img)
+		ft_error(8);
 	while (*line == ' ')
 		line++;
 	new = ft_strtrim(line, " ");
@@ -97,6 +105,8 @@ void	ft_parse_no(t_info *p, char *line)
 	char	*new;
 
 	line += 2;
+	if (p->tex[0].img)
+		ft_error(8);
 	while (*line == ' ')
 		line++;
 	new = ft_strtrim(line, " ");

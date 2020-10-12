@@ -10,16 +10,16 @@ OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 RM				= rm -f
-CFLAGS			= -Iinc/ -Imlx/ -Wall -Werror -Wextra
+CFLAGS			= -Iinc/ -Imlx/ -Wall -Werror -Wextra -g
 LIBS			= -Lmlx -lmlx -framework OpenGL -framework AppKit -lm
 MLX				= libmlx.dylib
-NAME			= cub3d
+NAME			= cub3D
 
 all:			$(NAME)
 
 $(NAME):		$(MLX) $(OBJS) $(INCS)
 				@cp mlx/$(MLX) .
-				gcc ${CFLAGS} -o cub3d ${OBJS} ${LIBS}
+				gcc ${CFLAGS} -o cub3D ${OBJS} ${LIBS}
 				@echo "Done"
 
 $(MLX):

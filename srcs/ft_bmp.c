@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:27:56 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:28:30 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void			ft_bmp(char *name)
 
 	if ((fd = open(name, O_RDONLY)) < 0)
 		ft_error(9);
+	p.scr = 1;
 	ft_start_parsing(fd, &p);
 	ft_first_image(&p);
 	ft_create_bitmap(&p.img, &p);

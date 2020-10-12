@@ -6,11 +6,20 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 12:33:52 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:31:50 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+int		ft_check_cl(int c)
+{
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+	|| (c >= '0' && c <= '9'))
+		return (1);
+	else
+		return (0);
+}
 
 int		ft_check_set(char const *set, char c)
 {

@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:32:50 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:18:27 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	ft_vald(char **map, int i, int j)
 	if (map[i][j] == '0')
 	{
 		if (map[i + 1][j] == ' ' || map[i][j + 1] == ' ' ||
-		map[i - 1][j] == ' ' || map[i][j - 1] == ' ')
+		map[i - 1][j] == ' ' || map[i][j - 1] == ' ' ||
+		map[i + 1][j] == '\0' || map[i][j + 1] == '\0' ||
+		map[i - 1][j] == '\0' || map[i][j - 1] == '\0')
 			ft_error(7);
 		if (((int)ft_strlen(map[i - 1]) + 1 < j) ||
 		((int)ft_strlen(map[i + 1]) + 1 < j))

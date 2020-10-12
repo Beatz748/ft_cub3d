@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:23:53 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:37:07 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 17:11:41 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,27 @@ int		ft_checking_all(t_info *p)
 	return (0);
 }
 
+void	ft_check_clear(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if ((ft_check_cl(line[i])))
+			ft_error(8);
+		i++;
+	}
+}
+
 int		ft_parser(t_info *p, char *line)
 {
 	if (line[0] == 'R')
 		ft_parse_resolution(p, line);
 	else if (line[0] == 'F')
-		ft_parse_floor(p, line);
+		ft_parse_floor(p, line + 1);
 	else if (line[0] == 'C')
-		ft_parse_ceil(p, line);
+		ft_parse_ceil(p, line + 1);
 	else if (line[0] == 'N' && line[1] == 'O')
 		ft_parse_no(p, line);
 	else if (line[0] == 'S' && line[1] == 'O')
@@ -39,6 +52,8 @@ int		ft_parser(t_info *p, char *line)
 		ft_parse_ea(p, line);
 	else if (line[0] == 'S' && line[1] == ' ')
 		ft_parse_sp(p, line);
+	else if (!(ft_strchr(line, '\n')))
+		ft_check_clear(line);
 	return (0);
 }
 
