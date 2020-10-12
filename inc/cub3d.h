@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 21:39:53 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/12 17:08:54 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 22:48:56 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct	s_sp{
 	int				width;
 }				t_sp;
 
+int				ft_error2(t_info *p);
 int				ft_check_cl(int c);
 void			ft_lstadd_back(t_list **lst, t_list *new);
 t_list			*ft_lstlast(t_list *lst);

@@ -6,11 +6,18 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:32:41 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 22:51:32 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+int		ft_error2(t_info *p)
+{
+	mlx_destroy_window(p->mlx, p->win);
+	exit(-1);
+	return (1);
+}
 
 void	ft_error(int i)
 {

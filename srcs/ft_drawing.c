@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:23:59 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/12 22:48:03 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	ft_start_drawing(t_info *p)
 	ft_first_image(p);
 	mlx_loop_hook(p->mlx, ft_image, p);
 	mlx_hook(p->win, 2, (1L << 0), ft_press, p);
+	mlx_hook(p->win, 17, 0, ft_error2, p);
 	mlx_hook(p->win, 3, (1L << 1), ft_unpress, p);
 	mlx_loop(p->mlx);
 }
