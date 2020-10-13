@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:15:52 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/12 16:55:42 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/13 20:39:40 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_check_xpm(char *new)
 
 void	ft_check_less_255(int *c, int r, int g, int b)
 {
-	if (r > 255 || g > 255 || b > 255)
+	if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
 		ft_error(8);
 	*c = r * 65536 + g * 256 + b;
 }
