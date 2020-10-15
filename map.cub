@@ -1,12 +1,11 @@
-R 605 405
+R 444 44489789
 NO textures/eagle.xpm
 SO textures/colorstone.xpm
 WE textures/redbrick.xpm
 EA textures/eagle.xpm
 S textures/barrel.xpm
-F 1,254,1
+F 1,254,0
 C 254,1,1
-
 
 1111111111111111111111111111
 1000000000000000000000000001

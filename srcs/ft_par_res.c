@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_par_res.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kshantel <shantel@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:35:22 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/12 16:34:46 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/10/15 20:55:30 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	ft_check_res(t_info *p)
 		p->sch = h;
 	if (p->scw > w)
 		p->scw = w;
+	if (p->sch < 0)
+		ft_error(8);
+	if (p->scw < 0)
+		ft_error(8);
 }
 
 void	ft_check_for_kazan(t_info *p)
