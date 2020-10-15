@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kshantel <shantel@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/11 14:27:20 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/12 16:37:57 by kshantel         ###   ########.fr       */
+/*   Created: 2020/10/15 20:41:04 by kshantel          #+#    #+#             */
+/*   Updated: 2020/10/15 20:41:04 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+void	ft_init2(t_info *p)
+{
+	p->num_s = 0;
+	p->tex[0].img = NULL;
+	p->tex[1].img = NULL;
+	p->tex[2].img = NULL;
+	p->tex[3].img = NULL;
+	p->tex[4].img = NULL;
+}
 
 void	ft_initialization(t_info *p)
 {
@@ -37,7 +47,7 @@ void	ft_initialization(t_info *p)
 	p->raydiry = 0;
 	p->math.d_x = 0;
 	p->math.d_y = 0;
-	p->num_s = 0;
+	ft_init2(p);
 }
 
 void	ft_get_started(char *name)

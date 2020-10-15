@@ -19,7 +19,7 @@ all:			$(NAME)
 
 $(NAME):		$(MLX) $(OBJS) $(INCS)
 				@cp mlx/$(MLX) .
-				gcc ${CFLAGS} -o cub3D ${OBJS} ${LIBS}
+				gcc -g ${CFLAGS} -o cub3D ${OBJS} ${LIBS}
 				@echo "Done"
 
 $(MLX):
