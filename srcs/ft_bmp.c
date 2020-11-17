@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 14:27:56 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/12 16:28:30 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/11/17 19:10:32 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 unsigned int	get_color(t_data *data, int x, int y)
 {
-	char	*dst;
+	char	*dst;//erfergferggver
 
 	dst = data->addr + (y * data->lln + x * (data->bpp / 8));
 	return (*(unsigned int*)dst);
