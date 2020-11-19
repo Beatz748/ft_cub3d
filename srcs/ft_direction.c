@@ -6,7 +6,7 @@
 /*   By: kshantel <kshantel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 22:20:29 by kshantel          #+#    #+#             */
-/*   Updated: 2020/10/11 16:07:49 by kshantel         ###   ########.fr       */
+/*   Updated: 2020/11/19 18:31:37 by kshantel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_turn(t_info *p)
 		p->plx = p->plx * cos(ROTSPD) - p->ply * sin(ROTSPD);
 		p->ply = oldpl * sin(ROTSPD) + p->ply * cos(ROTSPD);
 	}
-	if (p->move.left)
+	else if (p->move.left)
 	{
 		p->dirx = p->dirx * cos(-ROTSPD) - p->diry * sin(-ROTSPD);
 		p->diry = olddir * sin(-ROTSPD) + p->diry * cos(-ROTSPD);
